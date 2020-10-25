@@ -28,7 +28,7 @@ minetest.register_biome({
 	node_stone = "rainf:granite",
 	y_max = 5,
 	y_min = 1,
-	heat_point = 45,
+	heat_point = 52,
 	humidity_point = 75,
 })
 
