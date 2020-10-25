@@ -13,13 +13,20 @@ else
 	water_type= "default:water_source"
 end
 
+local dirt_type
+if minetest.get_modpath("swaz")~=nil then
+	dirt_type = "swaz:silt"
+else
+	dirt_type = "rainf:dirt"
+end
+
 -- Register Biomes
 
 minetest.register_biome({
 	name = "temperate_rainforest",
 	node_top = "rainf:meadow",
 	depth_top = 1,
-	node_filler = "swaz:silt",
+	node_filler = dirt_type,
 	depth_filler = 3,
 	node_riverbed = "default:sand",
 	depth_riverbed = 2,
@@ -62,6 +69,15 @@ minetest.register_node("rainf:meadow_with_mud", {
 				"rainf_dirt.png"},
 	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
 	drop = "swaz:mud",
+	sounds = default.node_sound_dirt_defaults({
+		footstep = {name = "default_grass_footstep", gain = 0.25},
+	}),
+})
+
+minetest.register_node("rainf:dirt", {
+	description = S("Dirt"),
+	tiles = "rainf_dirt.png",
+	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
 	}),
