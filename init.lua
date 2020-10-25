@@ -26,7 +26,7 @@ minetest.register_biome({
 	node_water_top = water_type,
 	depth_water_top = 1,
 	node_stone = "rainf:granite",
-	y_max = 5,
+	y_max = 31000,
 	y_min = 1,
 	heat_point = 52,
 	humidity_point = 75,
