@@ -76,7 +76,7 @@ minetest.register_node("rainf:meadow_with_mud", {
 
 minetest.register_node("rainf:dirt", {
 	description = S("Dirt"),
-	tiles = "rainf_dirt.png",
+	tiles = {"rainf_dirt.png",},
 	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
