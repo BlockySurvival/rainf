@@ -1,7 +1,12 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local mg_name = minetest.get_mapgen_setting("mg_name")
+
+
+--Variables
+
+local grapes_grow_time = 2250
+
 local water_type
-minetest.chat_send_all(mg_name)
 if mg_name == "valleys" then
 	water_type= "default:river_water_source"
 else
@@ -54,8 +59,7 @@ minetest.register_node("rainf:blossom_meadow", {
 minetest.register_node("rainf:meadow_with_mud", {
 	description = S("Meadow with Mud"),
 	tiles = {"rainf_meadow_with_mud.png", "rainf_dirt.png",
-		{name = "rainf_dirt.png^rainf_dirt_with_grass_side.png",
-			tileable_vertical = false}},
+				"rainf_dirt.png"},
 	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
 	drop = "swaz:mud",
 	sounds = default.node_sound_dirt_defaults({
@@ -105,7 +109,7 @@ minetest.register_node("rainf:aloe_vera", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 0.0, 4 / 16},
+		fixed = {-3 / 16, -0.5, -3 / 16, 3 / 16, -2 / 16, 3 / 16},
 	},
 })
 
@@ -125,9 +129,11 @@ minetest.register_node("rainf:weed", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 0.0, 4 / 16},
+		fixed = {-3 / 16, -0.5, -3 / 16, 3 / 16, -2 / 16, 3 / 16},
 	},
 })
+
+--Short Grass
 
 minetest.register_node("rainf:grass", {
 	description = S("Short Grass"),
@@ -145,7 +151,7 @@ minetest.register_node("rainf:grass", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 0.0, 4 / 16},
+		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, -5 / 16, 4 / 16},
 	},
 })
 
@@ -207,7 +213,7 @@ minetest.register_node("rainf:camomille", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-2 / 16, -0.5, -2 / 16, 2 / 16, 0, 2 / 16},
+		fixed = {-3 / 16, -0.5, -3 / 16, 3 / 16, -6 / 16, 3 / 16},
 	},
 })
 
@@ -227,7 +233,7 @@ minetest.register_node("rainf:red_daisy", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-2 / 16, -0.5, -2 / 16, 2 / 16, 0, 2 / 16},
+		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, -5 / 16, 4 / 16},
 	},
 })
 
@@ -293,6 +299,21 @@ minetest.register_node("rainf:vine", {
 		type = "fixed",
 		fixed = {-2 / 16, -0.5, -2 / 16, 2 / 16, 0, 2 / 16},
 	},
+
+	on_construct = function(pos)
+		--20% of variation on time
+		local twenty_percent = grapes_grow_time * 0.2
+		local grow_time = math.random(grapes_grow_time - twenty_percent, grapes_grow_time + twenty_percent)
+		minetest.get_node_timer(pos):start(grow_time)
+	end,
+
+	on_timer = function(pos)
+		local node = minetest.get_node_or_nil(pos)
+		if node and node.name == "rainf:vine" then
+			minetest.set_node(pos, {name = "rainf:grapevine"})
+			return false
+		end
+	end,
 })
 
 minetest.register_node("rainf:grapevine", {
@@ -342,7 +363,7 @@ minetest.register_node("rainf:champignon", {
 	on_use = minetest.item_eat(3),
 	selection_box = {
 		type = "fixed",
-		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, -1 / 16, 4 / 16},
+		fixed = {-2 / 16, -0.5, -2 / 16, 2 / 16, -3 / 16, 2 / 16},
 	}
 })
 
@@ -782,4 +803,27 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		y_max = 80,
 	})
 
+end
+
+if minetest.get_modpath("stairs")~=nil then
+
+	stairs.register_stair_and_slab(
+		"granite",
+		"rainf:granite",
+		{cracky = 2, stone = 1},
+		{"rainf_granite.png"},
+		S("Granite Stair"),
+		S("Granite Slab"),
+		default.node_sound_stone_defaults()
+	)
+
+	stairs.register_stair_and_slab(
+		"pink_granite",
+		"rainf:pink_granite",
+		{cracky = 2, stone = 1},
+		{"rainf_pink_granite.png"},
+		S("Pink Granite Stair"),
+		S("Pink Granite Slab"),
+		default.node_sound_stone_defaults()
+	)
 end
