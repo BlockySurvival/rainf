@@ -67,7 +67,7 @@ minetest.register_node("rainf:meadow_with_mud", {
 	description = S("Meadow with Mud"),
 	tiles = {"rainf_meadow_with_mud.png", "rainf_dirt.png",
 				"rainf_dirt.png"},
-	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
+	groups = {crumbly = 3},
 	drop = "swaz:mud",
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
@@ -77,7 +77,7 @@ minetest.register_node("rainf:meadow_with_mud", {
 minetest.register_node("rainf:dirt", {
 	description = S("Dirt"),
 	tiles = {"rainf_dirt.png",},
-	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
+	groups = {crumbly = 3, soil = 1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
 	}),
@@ -842,4 +842,51 @@ if minetest.get_modpath("stairs")~=nil then
 		S("Pink Granite Slab"),
 		default.node_sound_stone_defaults()
 	)
+end
+
+--Farming Support
+
+if minetest.get_modpath("farming")~=nil then
+
+	minetest.override_item("rainf:meadow", {
+		soil = {
+			base = "rainf:meadow",
+			dry = "rainf:soil",
+			wet = "rainf:soil_wet"
+		}
+	})
+
+	minetest.override_item("rainf:blossom_meadow", {
+		soil = {
+			base = "rainf:blossom_meadow",
+			dry = "rainf:soil",
+			wet = "rainf:soil_wet"
+		}
+	})
+
+	minetest.register_node("rainf:soil", {
+		description = S("Soil"),
+		tiles = {"rainf_dirt.png^farming_soil.png", "rainf_dirt.png"},
+		drop = "rainf:dirt",
+		groups = {crumbly=3, not_in_creative_inventory=1, soil=2, grassland = 1, field = 1},
+		sounds = default.node_sound_dirt_defaults(),
+		soil = {
+			base = "rainf:dirt",
+			dry = "rainf:soil",
+			wet = "rainf:soil_wet"
+		}
+	})
+
+	minetest.register_node("rainf:soil_wet", {
+		description = S("Wet Soil"),
+		tiles = {"rainf_dirt.png^farming_soil_wet.png", "rainf_dirt.png"},
+		drop = "rainf:dirt",
+		groups = {crumbly=3, not_in_creative_inventory=1, soil=3, wet = 1, grassland = 1, field = 1},
+		sounds = default.node_sound_dirt_defaults(),
+		soil = {
+			base = "rainf:dirt",
+			dry = "rainf:soil",
+			wet = "rainf:soil_wet"
+		}
+	})
 end
