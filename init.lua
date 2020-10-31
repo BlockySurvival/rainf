@@ -546,7 +546,7 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		y_max = 1000,
 		place_offset_y = -2,
 		spawn_by = "rainf:meadow_with_mud",
-		num_spawn_by = 5,
+		num_spawn_by = 6,
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
